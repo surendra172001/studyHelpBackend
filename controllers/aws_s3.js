@@ -15,7 +15,6 @@ const uploadS3 = multer({
   storage: multerS3({
     s3: s3,
     bucket: process.env.AWS_BUCKET_NAME,
-    acl: "public-read",
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
@@ -23,9 +22,9 @@ const uploadS3 = multer({
       try {
         const userId = req.userId;
         const fileExtension = file.originalname.split(".")[1];
-        const mainFile = file.fieldname.toUpperCase();
+        const mainFile = file.originalname.split(".")[0];
+        req.file_name = mainFile;
         req.type = fileExtension;
-        console.log(mainFile);
         cb(null, userId + "_" + mainFile + "." + fileExtension);
       } catch (error) {
         const err_msg = "S3 UPLOAD FILE RENAMING ERROR";

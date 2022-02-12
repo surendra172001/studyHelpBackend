@@ -8,7 +8,7 @@ const docSchema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
-  name: {
+  file_name: {
     type: String,
     required: true,
     minlength: 5,
@@ -24,6 +24,7 @@ const docSchema = new mongoose.Schema({
   },
   file_link: {
     type: String,
+    unique: true,
     required: true,
   },
   rating: {
@@ -65,3 +66,18 @@ const docSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model("Doc", docSchema);
+
+/*
+userId
+file_name
+date
+is_link
+file_link
+rating
+description
+coins_required
+subject
+branch
+type
+tags
+*/

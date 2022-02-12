@@ -14,11 +14,29 @@ const populateUserId = (req, res, next) => {
 const uploadDoc = uploadS3.fields([{ name: "doc", maxCount: 1 }]);
 
 const createDoc = async (req, res) => {
-  for (const fieldName in req.files) {
-    const file = req.files[fieldName][0];
-    req.body[fieldName] = file.location;
+  try {
+    for (const fieldName in req.files) {
+      const file = req.files[fieldName][0];
+      req.body[fieldName] = file.location;
+    }
+    if (!req.body.doc) {
+      req.body.file_link = req.body.doc_link;
+    }
+    req.body.userId = req.params.userId;
+    req.body.type = req.type;
+    req.body.file_name = req.file_name;
+    req.body.file_link = req.body.doc;
+    req.body.is_link = !req.body.doc;
+    delete req.body["doc_link"];
+    delete req.body["doc"];
+    console.log(req.body);
+    const newDoc = new Doc(req.body);
+    const savedDoc = await newDoc.save();
+    res.json(savedDoc);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
   }
-  res.send("createDoc working");
 };
 
 const getDoc = async (req, res) => {
