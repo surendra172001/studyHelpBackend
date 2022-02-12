@@ -27,6 +27,7 @@ mongoose
 
 app.use("/api/user", require("./routes/user.js"));
 app.use("/api/auth", require("./routes/auth.js"));
+app.use("/api/doc", require("./routes/doc.js"));
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
