@@ -32,14 +32,34 @@ const populateUser = async (req, res, next, userId) => {
   }
 };
 
-// TODO:
-// const updateUser
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    const result = await User.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 
-// TODO:
-// const deleteUser
+const deleteUser = async (req, res) => {
+  const { userId } = req.params;
+  try {
+    await User.findByIdAndDelete(userId);
+    res.json({ msg: "Deletion Successful" });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 
 module.exports = {
   getUser,
   getAllUsers,
   populateUser,
+  updateUser,
+  deleteUser,
 };

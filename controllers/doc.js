@@ -1,5 +1,6 @@
 const Doc = require("../models/doc");
 const { uploadS3 } = require("./aws_s3");
+const mongoose = require("mongoose");
 
 const populateUserId = (req, res, next) => {
   const { userId } = req.params;
@@ -50,6 +51,18 @@ const getDoc = async (req, res) => {
   }
 };
 
+const getAllDocsOfUser = async (req, res) => {
+  const userId = mongoose.Types.ObjectId(req.params.userId);
+  console.log(userId);
+  try {
+    const result = await Doc.find({ userId });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
+
 const getAllDocs = async (req, res) => {
   try {
     const result = await Doc.find();
@@ -60,40 +73,40 @@ const getAllDocs = async (req, res) => {
   }
 };
 
-// const populateUser = async (req, res, next, userId) => {
-//   try {
-//     const result = await User.findById(userId);
-//     req.user = result;
-//     next();
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// };
+const populateDoc = async (req, res, next, docId) => {
+  try {
+    const result = await Doc.findById(docId);
+    req.doc = result;
+    next();
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 
-// const updateUser = async (req, res) => {
-//   const { userId } = req.params;
-//   try {
-//     const result = await User.findByIdAndUpdate(userId, req.body, {
-//       new: true,
-//     });
-//     res.json(result);
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// };
+const updateDoc = async (req, res) => {
+  const { docId } = req.params;
+  try {
+    const result = await Doc.findByIdAndUpdate(docId, req.body, {
+      new: true,
+    });
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 
-// const deleteUser = async (req, res) => {
-//   const { userId } = req.params;
-//   try {
-//     await User.findByIdAndDelete(userId);
-//     res.json({ msg: "Deletion Successful" });
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// };
+const deleteDoc = async (req, res) => {
+  const { docId } = req.params;
+  try {
+    await Doc.findByIdAndDelete(docId);
+    res.json({ msg: "Deletion Successful" });
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 
 module.exports = {
   populateUserId,
@@ -101,4 +114,8 @@ module.exports = {
   getDoc,
   uploadDoc,
   getAllDocs,
+  populateDoc,
+  updateDoc,
+  deleteDoc,
+  getAllDocsOfUser,
 };
