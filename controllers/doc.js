@@ -50,15 +50,15 @@ const getDoc = async (req, res) => {
   }
 };
 
-// const getAllUsers = async (req, res) => {
-//   try {
-//     const result = await User.find();
-//     res.json(result);
-//   } catch (error) {
-//     console.log(error);
-//     res.sendStatus(500);
-//   }
-// };
+const getAllDocs = async (req, res) => {
+  try {
+    const result = await Doc.find();
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+};
 
 // const populateUser = async (req, res, next, userId) => {
 //   try {
@@ -100,4 +100,5 @@ module.exports = {
   createDoc,
   getDoc,
   uploadDoc,
+  getAllDocs,
 };
