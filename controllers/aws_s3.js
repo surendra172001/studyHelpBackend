@@ -21,8 +21,9 @@ const uploadS3 = multer({
     key: function (req, file, cb) {
       try {
         const userId = req.userId;
-        const fileExtension = file.originalname.split(".")[1];
-        const mainFile = file.originalname.split(".")[0];
+        const nameParts = file.originalname.split(".");
+        const fileExtension = nameParts[nameParts.length - 1];
+        const mainFile = nameParts[0];
         req.file_name = mainFile;
         req.type = fileExtension;
         cb(null, userId + "_" + mainFile + "." + fileExtension);
