@@ -69,7 +69,7 @@ const getAllDocsOfUser = async (req, res) => {
 
 const getAllDocs = async (req, res) => {
   try {
-    const result = await Doc.find();
+    const result = await Doc.find().populate("userId");
     res.json(result);
   } catch (error) {
     console.log(error);
