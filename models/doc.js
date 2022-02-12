@@ -18,7 +18,7 @@ const docSchema = new mongoose.Schema({
     type: Date,
     default: Date.now(),
   },
-  link: {
+  is_link: {
     required: true,
     type: Boolean,
   },
