@@ -20,17 +20,21 @@ const createDoc = async (req, res) => {
       const file = req.files[fieldName][0];
       req.body[fieldName] = file.location;
     }
+
     if (!req.body.doc) {
+      req.body.type = "link";
+      req.body.file_name = "No File Uploaded";
       req.body.file_link = req.body.doc_link;
+    } else {
+      req.body.type = req.type;
+      req.body.file_name = req.file_name;
+      req.body.file_link = req.body.doc;
     }
     req.body.userId = req.params.userId;
-    req.body.type = req.type;
-    req.body.file_name = req.file_name;
-    req.body.file_link = req.body.doc;
     req.body.is_link = !req.body.doc;
     delete req.body["doc_link"];
     delete req.body["doc"];
-    console.log(req.body);
+    // console.log(req.body);
     const newDoc = new Doc(req.body);
     const savedDoc = await newDoc.save();
     res.json(savedDoc);

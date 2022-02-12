@@ -26,6 +26,7 @@ const uploadS3 = multer({
         const mainFile = nameParts[0];
         req.file_name = mainFile;
         req.type = fileExtension;
+        // console.log(userId, nameParts, fileExtension);
         cb(null, userId + "_" + mainFile + "." + fileExtension);
       } catch (error) {
         const err_msg = "S3 UPLOAD FILE RENAMING ERROR";
