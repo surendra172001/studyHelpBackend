@@ -85,6 +85,14 @@ const isSignedIn = expressJwt({
   },
 });
 
+const isAuthorized = (req, res, next) => {
+  const { userId } = req.params;
+  if (!req.user || req.user._id !== userId) {
+    return res.status(403).send("Access Denied");
+  }
+  next();
+};
+
 // TODO:
 // const handleSignout = (req, res) => {
 //   res.clearCookie("token");
@@ -95,4 +103,5 @@ module.exports = {
   handleSignup,
   handleSignin,
   isSignedIn,
+  isAuthorized,
 };

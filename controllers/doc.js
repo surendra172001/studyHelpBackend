@@ -1,18 +1,19 @@
 const Doc = require("../models/doc");
 const { uploadS3 } = require("./aws_s3");
 
-const populateUserId = (req, res) => {
-  const userId = req.params;
+const populateUserId = (req, res, next) => {
+  const { userId } = req.params;
+
   if (!userId) {
     res.status(400).send("Invalid User");
   }
   req.userId = userId;
+  next();
 };
 
 const uploadDoc = uploadS3.fields([{ name: "doc", maxCount: 1 }]);
 
 const createDoc = async (req, res) => {
-  console.log("third");
   for (const fieldName in req.files) {
     const file = req.files[fieldName][0];
     req.body[fieldName] = file.location;
