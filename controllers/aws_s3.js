@@ -17,7 +17,11 @@ const uploadS3 = multer({
     bucket: process.env.AWS_BUCKET_NAME,
     acl: "public-read",
     metadata: function (req, file, cb) {
-      cb(null, { fieldName: file.fieldname });
+      cb(null, {
+        fieldName: file.fieldname,
+        "Content-Type": "application/pdf",
+        "Content-Disposition": "inline",
+      });
     },
     key: function (req, file, cb) {
       try {
